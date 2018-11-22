@@ -1,13 +1,53 @@
 package com.example.rkjc.news_app_2;
 
-public class NewsItem {
-    public String mAuthor;
-    public String mTitle;
-    public String mDescription;
-    public String mUrl;
-    public String mUrlToImage;
-    public String mPublishedAt;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Ignore;
+import android.support.annotation.NonNull;
 
+@Entity(tableName ="news_item")
+public class NewsItem {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name="id")
+    private int id;
+
+    @NonNull
+    @ColumnInfo(name="author")
+    private String mAuthor;
+
+    @NonNull
+    @ColumnInfo(name="title")
+    private String mTitle;
+
+    @NonNull
+    @ColumnInfo(name="description")
+    private String mDescription;
+
+    @NonNull
+    @ColumnInfo(name="url")
+    private String mUrl;
+
+    @NonNull
+    @ColumnInfo(name="urlToImage")
+    private String mUrlToImage;
+
+    @NonNull
+    @ColumnInfo(name="publishedAt")
+    private String mPublishedAt;
+
+    public NewsItem(int id, String author, String title, String description, String url,
+                    String urlToImage, String publishedAt) {
+        this.id = id;
+        this.mAuthor = author;
+        this.mTitle = title;
+        this.mDescription = description;
+        this.mUrl = url;
+        this.mUrlToImage = urlToImage;
+        this.mPublishedAt = publishedAt;
+    }
+
+    @Ignore
     public NewsItem(String author, String title, String description, String url,
                     String urlToImage, String publishedAt) {
         this.mAuthor = author;
@@ -16,6 +56,13 @@ public class NewsItem {
         this.mUrl = url;
         this.mUrlToImage = urlToImage;
         this.mPublishedAt = publishedAt;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getAuthor() {

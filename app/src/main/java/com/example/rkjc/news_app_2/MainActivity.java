@@ -14,11 +14,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
+import android.arch.lifecycle.Observer;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,10 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
     private NewsAdapter mNewsAdapter;
 
+    private NewsItemViewModel mNewsItemViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mNewsItemViewModel = ViewModelProviders.of(this).get(NewsItemViewModel.class);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.news_recyclerview);
 
@@ -44,12 +51,20 @@ public class MainActivity extends AppCompatActivity {
         mNewsAdapter = new NewsAdapter(this);
         mRecyclerView.setAdapter(mNewsAdapter);
 
+        mNewsItemViewModel.getmAllNewsItems().observe(this, new Observer<List<NewsItem>>() {
+            @Override
+            public void onChanged(@Nullable final List<NewsItem> news) {
+                // Update the cached copy of the words in the adapter.
+                mNewsAdapter.setNews(new ArrayList<NewsItem>(news));
+            }
+        });
+
     }
 
-    private void makeNewsSearchQuery() {
-        URL newsSearchUrl = NetworkUtils.buildUrl();
-        new NewsQueryTask().execute(newsSearchUrl);
-    }
+//    private void makeNewsSearchQuery() {
+//        URL newsSearchUrl = NetworkUtils.buildUrl();
+//        new NewsQueryTask().execute(newsSearchUrl);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,31 +76,33 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_search) {
-            makeNewsSearchQuery();
+            mNewsItemViewModel.sync();
+            mNewsItemViewModel.updateCurrentItems();
+//            mNewsItemViewModel.getmAllNewsItems();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public class NewsQueryTask extends AsyncTask<URL, Void, String> {
-
-        @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String newsSearchResults = null;
-            try {
-                newsSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return newsSearchResults;
-        }
-
-        @Override
-        protected void onPostExecute(String newsSearchResults) {
-            if (newsSearchResults != null && !newsSearchResults.equals("")) {
-                mNewsAdapter.setNews(JsonUtils.parseNews(newsSearchResults));
-            }
-        }
-    }
+//    public class NewsQueryTask extends AsyncTask<URL, Void, String> {
+//
+//        @Override
+//        protected String doInBackground(URL... params) {
+//            URL searchUrl = params[0];
+//            String newsSearchResults = null;
+//            try {
+//                newsSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return newsSearchResults;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String newsSearchResults) {
+//            if (newsSearchResults != null && !newsSearchResults.equals("")) {
+//                mNewsAdapter.setNews(JsonUtils.parseNews(newsSearchResults));
+//            }
+//        }
+//    }
 }

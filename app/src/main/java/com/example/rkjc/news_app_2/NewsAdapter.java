@@ -73,7 +73,6 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.NewsViewHolde
             mDescription.setText("Description: " + mNews.get(listIndex).getDescription());
             mDate.setText("Date: " + mNews.get(listIndex).getPublishedAt());
             mUrl = mNews.get(listIndex).getUrl();
-//            url.setText(mRepos.get(listIndex).getUrl());
             itemView.setOnClickListener(this);
         }
     }
