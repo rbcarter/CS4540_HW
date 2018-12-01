@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ScheduleUtils.scheduleRefresh(this);
     }
 
 //    private void makeNewsSearchQuery() {

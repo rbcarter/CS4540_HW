@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,7 +53,8 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.NewsViewHolde
     public class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mTitle;
         public final TextView mDescription;
-        public final TextView mDate;
+//        public final TextView mDate;
+        public final ImageView mImg;
         public String mUrl;
         private Context context;
 
@@ -58,7 +62,8 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.NewsViewHolde
             super(view);
             mTitle = (TextView) view.findViewById(R.id.title);
             mDescription = (TextView) view.findViewById(R.id.description);
-            mDate = (TextView) view.findViewById(R.id.date);
+//            mDate = (TextView) view.findViewById(R.id.date);
+            mImg = (ImageView) view.findViewById(R.id.img);
             this.context = context;
         }
 
@@ -69,10 +74,20 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.NewsViewHolde
         }
 
         void bind(final int listIndex) {
-            mTitle.setText("Title: " + mNews.get(listIndex).getTitle());
-            mDescription.setText("Description: " + mNews.get(listIndex).getDescription());
-            mDate.setText("Date: " + mNews.get(listIndex).getPublishedAt());
+            mTitle.setText(mNews.get(listIndex).getTitle());
+
+            String descriptionString = mNews.get(listIndex).getPublishedAt()
+                    + " . " + mNews.get(listIndex).getDescription();
+            mDescription.setText(descriptionString);
+
             mUrl = mNews.get(listIndex).getUrl();
+
+            String urlToImage = mNews.get(listIndex).getUrlToImage();
+            if(urlToImage != null){
+                Picasso.get()
+                        .load(urlToImage)
+                        .into(mImg);
+            }
             itemView.setOnClickListener(this);
         }
     }

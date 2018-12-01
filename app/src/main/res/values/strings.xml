@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">news-app-2</string>
+
+    <string name="news_reminder_notification_title">News</string>
+    <string name="news_reminder_notification_body">There\'s new news!</string>
+    <string name="main_notification_channel_name">Primary</string>
 </resources>

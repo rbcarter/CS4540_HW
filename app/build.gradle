@@ -49,4 +49,11 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
     androidTestImplementation "android.arch.persistence.room:testing:$rootProject.roomVersion"
+
+    // For firebase job dispatcher
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+
 }
